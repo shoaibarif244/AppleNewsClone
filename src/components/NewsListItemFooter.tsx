@@ -2,6 +2,8 @@ import { Author } from "@/types/types";
 import { formatDistanceToNow } from "date-fns";
 import { Text, View, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useThemedStyles } from "../hooks/useThemedStyles";
+import { Theme } from "../types/theme";
 
 type NewsListItemFooterProps = {
   publishedDate: string;
@@ -12,6 +14,8 @@ export default function NewsListItemFooter({
   publishedDate,
   author,
 }: NewsListItemFooterProps) {
+  const styles = useThemedStyles(createStyles);
+  
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
@@ -22,24 +26,25 @@ export default function NewsListItemFooter({
       <MaterialCommunityIcons
         name="dots-horizontal"
         size={22}
-        color="grey"
+        color={styles.iconColor}
         style={styles.icon}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    gap: theme.spacing.xs,
   },
   text: {
-    color: "grey",
-    fontSize: 12,
+    color: theme.colors.textSecondary,
+    fontSize: theme.typography.fontSize.xs,
   },
   icon: {
-    marginLeft: "auto",
+    marginLeft: "auto" as const,
   },
+  iconColor: theme.colors.textSecondary,
 });

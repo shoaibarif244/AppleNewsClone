@@ -1,7 +1,8 @@
 import { Link } from "expo-router";
 import { News } from "@/types/types";
 import { Image, Pressable, Text, View, StyleSheet } from "react-native";
-
+import { useThemedStyles } from "../../hooks/useThemedStyles";
+import { Theme } from "../../types/theme";
 import NewsListItemFooter from "../NewsListItemFooter";
 
 type MainNewsCardProps = {
@@ -9,6 +10,8 @@ type MainNewsCardProps = {
 };
 
 export default function MainNewsCard({ newsArticle }: MainNewsCardProps) {
+  const styles = useThemedStyles(createStyles);
+  
   return (
     <Link href={`newsArticle/${newsArticle.id}`} asChild>
       <Pressable style={styles.card}>
@@ -29,29 +32,31 @@ export default function MainNewsCard({ newsArticle }: MainNewsCardProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
   card: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    marginBottom: 15,
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.borderRadius.md,
+    marginBottom: theme.spacing.md,
+    ...theme.shadows.md,
   },
   image: {
     width: "100%",
     aspectRatio: 4 / 3,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: theme.borderRadius.md,
+    borderTopRightRadius: theme.borderRadius.md,
   },
   content: {
-    padding: 10,
+    padding: theme.spacing.sm,
   },
   logo: {
     width: 30,
     height: 30,
-    marginBottom: 5,
+    marginBottom: theme.spacing.xs,
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 25,
+    fontSize: theme.typography.fontSize.lg,
+    fontWeight: theme.typography.fontWeight.bold,
+    color: theme.colors.text,
+    marginBottom: theme.spacing.lg,
   },
 });

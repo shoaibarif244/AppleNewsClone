@@ -1,6 +1,9 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Text, View, SectionList, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useThemedStyles } from "../../hooks/useThemedStyles";
+import { useTheme } from "../../components/ThemeProvider";
+import { Theme } from "../../types/theme";
 
 import news from "@assets/data/homeNews.json";
 import NewsListItem from "@/components/ListItems/NewsListItem";
@@ -16,17 +19,19 @@ const TITLES = {
 export default function HomeScreen() {
   const date = new Date();
   const insets = useSafeAreaInsets();
+  const { theme } = useTheme();
+  const styles = useThemedStyles(createStyles);
 
   const sectionHeaders = {
     [TITLES.TOP_STORIES]: {
-      color: "#FC3C44",
+      color: theme.colors.error,
       subtitle: "Chosen by the Apple News editors.",
     },
     [TITLES.TRENDING]: {
-      color: "#EC9706",
+      color: theme.colors.warning,
     },
     [TITLES.FOR_YOU]: {
-      color: "#3CB043",
+      color: theme.colors.success,
       subtitle: "Recommendations based on topics & channels you read.",
     },
   };
@@ -74,7 +79,7 @@ export default function HomeScreen() {
           <View>
             {/* APPLE LOGO HEADER */}
             <View style={styles.header}>
-              <AntDesign name="apple1" size={24} color="black" />
+              <AntDesign name="apple1" size={24} color={theme.colors.text} />
               <Text style={styles.headerTitle}>News</Text>
             </View>
             <Text style={styles.dateText}>
@@ -90,33 +95,37 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
   container: {
-    padding: 15,
+    padding: theme.spacing.md,
+    backgroundColor: theme.colors.background,
+    flex: 1,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
   },
   headerTitle: {
-    fontSize: 27,
-    fontWeight: "800",
+    fontSize: theme.typography.fontSize.xxl,
+    fontWeight: theme.typography.fontWeight.bold,
+    color: theme.colors.text,
   },
   dateText: {
-    fontSize: 27,
-    fontWeight: "800",
-    color: "grey",
+    fontSize: theme.typography.fontSize.xxl,
+    fontWeight: theme.typography.fontWeight.bold,
+    color: theme.colors.textSecondary,
   },
   sectionHeader: {
-    gap: 5,
-    marginBottom: 10,
-    marginTop: 40,
+    gap: theme.spacing.xs,
+    marginBottom: theme.spacing.sm,
+    marginTop: theme.spacing.xxl,
   },
   sectionTitle: {
-    fontSize: 25,
-    fontWeight: "800",
+    fontSize: theme.typography.fontSize.xl,
+    fontWeight: theme.typography.fontWeight.bold,
   },
   sectionSubtitle: {
-    color: "#AAAAAA",
+    color: theme.colors.textSecondary,
+    fontSize: theme.typography.fontSize.sm,
   },
 });
