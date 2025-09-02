@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import { useTheme } from "../../components/ThemeProvider";
 
 const tabIcons: any = {
   index: (color: string) => <Entypo name="news" size={24} color={color} />,
@@ -26,8 +27,20 @@ const tabScreens = [
 ];
 
 export default function TabsLayout() {
+  const { theme } = useTheme();
+  
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs 
+      screenOptions={{ 
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: theme.colors.card,
+          borderTopColor: theme.colors.border,
+        },
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textSecondary,
+      }}
+    >
       {tabScreens.map(({ name, title }) => (
         <Tabs.Screen
           key={name}

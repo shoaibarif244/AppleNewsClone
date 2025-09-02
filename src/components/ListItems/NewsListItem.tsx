@@ -3,12 +3,16 @@ import { News } from "@/types/types";
 import { formatDistanceToNow } from "date-fns";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Image, Text, View, Pressable, StyleSheet } from "react-native";
+import { useThemedStyles } from "../../hooks/useThemedStyles";
+import { Theme } from "../../types/theme";
 
 type NewsListItemProps = {
   newsArticle: News;
 };
 
 export default function NewsListItem({ newsArticle }: NewsListItemProps) {
+  const styles = useThemedStyles(createStyles);
+  
   return (
     <Link href={`newsArticle/${newsArticle.id}`} asChild>
       <Pressable style={styles.container}>
@@ -34,7 +38,7 @@ export default function NewsListItem({ newsArticle }: NewsListItemProps) {
           <MaterialCommunityIcons
             name="dots-horizontal"
             size={22}
-            color="grey"
+            color={styles.iconColor}
             style={styles.icon}
           />
         </View>
@@ -43,48 +47,51 @@ export default function NewsListItem({ newsArticle }: NewsListItemProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    paddingBottom: 5,
-    gap: 10,
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.borderRadius.md,
+    marginBottom: theme.spacing.md,
+    paddingHorizontal: theme.spacing.sm,
+    paddingTop: theme.spacing.sm,
+    paddingBottom: theme.spacing.xs,
+    gap: theme.spacing.sm,
+    ...theme.shadows.sm,
   },
   row: {
-    flexDirection: "row",
+    flexDirection: "row" as const,
   },
   textContainer: {
     flexShrink: 1,
-    marginRight: 15,
-    gap: 5,
+    marginRight: theme.spacing.md,
+    gap: theme.spacing.xs,
   },
   logo: {
     width: 30,
     height: 30,
   },
   title: {
-    fontSize: 17,
-    fontWeight: "bold",
+    fontSize: theme.typography.fontSize.md,
+    fontWeight: theme.typography.fontWeight.bold,
+    color: theme.colors.text,
   },
   image: {
     width: 100,
     height: 100,
-    borderRadius: 10,
-    marginLeft: "auto",
+    borderRadius: theme.borderRadius.md,
+    marginLeft: "auto" as const,
   },
   footer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    gap: theme.spacing.xs,
   },
   metaText: {
-    color: "grey",
-    fontSize: 12,
+    color: theme.colors.textSecondary,
+    fontSize: theme.typography.fontSize.xs,
   },
   icon: {
-    marginLeft: "auto",
+    marginLeft: "auto" as const,
   },
+  iconColor: theme.colors.textSecondary,
 });
